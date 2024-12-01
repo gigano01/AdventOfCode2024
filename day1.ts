@@ -4,8 +4,8 @@ import { decodeFile } from './common';
 const filePath = process.argv[2];
 
 async function part1() {
-	const left: Array<number> = [];
-	const right: Array<number> = [];
+	const left: number[] = [];
+	const right: number[] = [];
 
 	await decodeFile(filePath, async (lines) => {
 		for (const line of lines) {
@@ -21,21 +21,16 @@ async function part1() {
 	//find the differences between these
 	let sum = 0;
 	for (let i = 0; i < left.length; i++) {
-		if (left[i] > right[i]) {
-			const num = left[i] - right[i];
-			sum += num;
-		} else {
-			const num = right[i] - left[i];
-			sum += num;
-		}
+		const num = Math.abs(left[i] - right[i]);
+		sum += num;
 	}
 
 	console.log("solution part 1:", sum);
 }
 
 async function part2() {
-	const left: Array<number> = [];
-	const right: Array<number> = [];
+	const left: number[] = [];
+	const right: number[] = [];
 
 	await decodeFile(filePath, async (lines) => {
 		for (const line of lines) {
