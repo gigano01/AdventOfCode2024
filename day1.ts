@@ -1,7 +1,8 @@
-import { decodeFile } from './common';
+import { announceChallenge, decodeFile } from './common';
 
 // Get the file path from command line arguments
 const filePath = process.argv[2];
+announceChallenge(1, "Historian Hysteria")
 
 async function part1() {
 	const left: number[] = [];

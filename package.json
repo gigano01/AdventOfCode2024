@@ -6,11 +6,11 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-	"exec": "npx @digitak/esrun"
+    "exec": "npx @digitak/esrun"
   },
   "author": "Gigonio",
   "license": "ISC",
-  "dependencies": {
-    "ts-node": "^10.9.2"
+  "devDependencies": {
+    "@types/node": "^22.10.1"
   }
 }

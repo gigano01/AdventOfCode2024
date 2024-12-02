@@ -1,6 +1,11 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
+export async function announceChallenge(day: number, title: string) {
+	console.log(`== Day ${day}: ${title} ==`);
+}
+
+
 export async function decodeFile(filePath: string, decodeHandler: (lines: Array<string>) => Promise<void>) {
     if (!filePath) {
         console.error('Please provide a file path as a command line argument.');
