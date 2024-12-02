@@ -50,7 +50,7 @@ async function part2() {
   let count = 0;
   for (let report of reports) {
     let isValid: boolean = false;
-    for (let i = -1; i < report.length + 1; i++) {
+    for (let i = -1; i < report.length; i++) {
       let _report: number[] = [];
       if (i < 0) {
         _report = report;
