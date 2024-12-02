@@ -5,6 +5,10 @@ export async function announceChallenge(day: number, title: string) {
 	console.log(`== Day ${day}: ${title} ==`);
 }
 
+export function removeFromArray<T>(array: T[], index: number): T[] {
+	return array.slice(0, index).concat(array.slice(index + 1))
+}
+
 
 export async function decodeFile(filePath: string, decodeHandler: (lines: Array<string>) => Promise<void>) {
     if (!filePath) {
