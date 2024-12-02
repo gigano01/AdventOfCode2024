@@ -31,7 +31,6 @@ async function part1() {
 			reports.push(numbers);
 		}
     });
-	console.log(reports);
 	let count = 0;
 	for(let report of reports) {
 		const isValid = validateReport(report);
