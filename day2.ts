@@ -66,9 +66,5 @@ async function part2() {
   console.log('solution part 2:', count);
 }
 
-async function main() {
-
-  await part1();
-  await part2();
-}
-main();
+part1();
+part2();
