@@ -11,7 +11,7 @@ async function part1() {
   });
   //get the instructions
   const instructions: RegExpExecArray[] = [...instructionStrings.matchAll(/mul\(\d{1,3},\d{1,3}\)/g)];
-  console.log(instructions);
+  // console.log(instructions);
 
   //parse the instructions
   const multipliedInstructions: number[] = instructions.map((instruction) => {
