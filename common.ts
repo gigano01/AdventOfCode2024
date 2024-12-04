@@ -50,7 +50,7 @@ export function get2DArrayElementSafe<T>(array: T[][], x: number, y: number): T 
 }
 
 export function extract2DArrayFunky<T>(
-    array: Array<Array<T>>,
+    array: T[][],
     x: number,
     y: number,
     width: number,
