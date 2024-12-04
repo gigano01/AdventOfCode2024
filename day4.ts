@@ -1,4 +1,4 @@
-import { announceChallenge, decodeFile } from './common';
+import { announceChallenge, decodeFile, extract2DArrayFunky, match2DArray } from './common';
 
 // Get the file path from command line arguments
 const filePath = process.argv[2];
@@ -41,52 +41,6 @@ function findXmas(y: number, x: number, grid: string[][], count: number) {
   return count;
 }
 
-let debugtrack = 0;
-function findX_MAS(y: number, x: number, grid: string[][], count: number) {
-  debugtrack++;
-
-  function rotateDirections(directions: { dx: number; dy: number; pat: string }[]) {
-    const rotatedDirections = [];
-    for (let i = 0; i < 4; i++) {
-      directions = directions.map(({ dx, dy, pat }) => ({ dx: -dy, dy: dx, pat }));
-      rotatedDirections.push([...directions]);
-    }
-    return rotatedDirections;
-  }
-  const directions = [
-    { dx: -1, dy: -1, pat: 'M' },
-    { dx: 1, dy: -1, pat: 'S' },
-    { dx: -1, dy: 1, pat: 'M' },
-    { dx: 1, dy: -1, pat: 'S' },
-  ];
-
-  const rotatedDirections = rotateDirections(directions);
-//   console.log(rotatedDirections);
-
-  for (let i = 0; i < 4; i++) {
-    let match = true;
-    for (const { dx, dy, pat } of rotatedDirections[i]) {
-    //   console.log(dx, dy);
-      let _x = x + 1 * dx;
-      let _y = y + 1 * dy;
-      if (_y < grid.length && _y >= 0) {
-        if (_x > grid[_y].length || _x <= 0 || grid[_y][_x] !== pat) {
-          match = false;
-        }
-      } else {
-        // console.log("aiepofhoieahgpioeazhgpioeahgpeaiohgfoaiehgapioegh")
-        match = false;
-      }
-    }
-    if (match) {
-      count++;
-	  console.log(x,y)
-      return count;
-    }
-  }
-  return count;
-}
-
 async function part1(grid: string[][]) {
   let count = 0;
   for (let y = 0; y < grid.length; y++) {
@@ -103,16 +57,41 @@ async function part1(grid: string[][]) {
 
 async function part2(grid: string[][]) {
   let count = 0;
+  const patterns: string[][][] = [
+    [
+      ['M', '', 'S'],
+      ['', 'A', ''],
+      ['M', '', 'S'],
+    ],
+    [
+      ['M', '', 'M'],
+      ['', 'A', ''],
+      ['S', '', 'S'],
+    ],
+    [
+      ['S', '', 'M'],
+      ['', 'A', ''],
+      ['S', '', 'M'],
+    ],
+    [
+      ['S', '', 'S'],
+      ['', 'A', ''],
+      ['M', '', 'M'],
+    ],
+  ];
+
   for (let y = 0; y < grid.length; y++) {
     for (let x = 0; x < grid[y].length; x++) {
-      // traverse the grid until we find X
-      if (grid[y][x] === 'A') {
-        count = findX_MAS(y, x, grid, count);
+      const extracted = extract2DArrayFunky(grid, y - 1, x - 1, 3, 3);
+      for (const pattern of patterns) {
+        const succes = match2DArray(extracted, pattern);
+		if (succes) {
+			count++
+		}
       }
     }
   }
 
-  console.log(debugtrack);
   console.log('solution part 2:', count);
 }
 
