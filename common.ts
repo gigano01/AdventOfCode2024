@@ -84,3 +84,9 @@ export function match2DArray<T>(array: T[][], matcheable: string[][]) {
     }
     return true;
 }
+
+export function swapElements(arr: any[], index1: number, index2: number) {
+    const temp = arr[index1];
+    arr[index1] = arr[index2];
+    arr[index2] = temp;
+}
