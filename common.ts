@@ -12,7 +12,7 @@ export function removeFromArray<T>(array: T[], index: number): T[] {
 export async function decodeFile(filePath: string, decodeHandler: (lines: Array<string>) => Promise<void>) {
     if (!filePath) {
         console.error("Please provide a file path as a command line argument.");
-        process.exit(1);
+        Deno.exit(1);
     }
 
     // Resolve the file path
@@ -27,7 +27,7 @@ export async function decodeFile(filePath: string, decodeHandler: (lines: Array<
         await decodeHandler(lines);
     } catch (err) {
         console.error(`Error reading or parsing file: ${err.message}`);
-        process.exit(1);
+        Deno.exit(1);
     }
 }
 
@@ -39,8 +39,8 @@ export function extract2DArray<T>(
     height: number
 ): Array<Array<any>> {
     let newArray: T[][] = [];
-    for (let i = y; i <= y + height; i++) {
-        newArray.push(array.slice(x, width));
+    for (let i = y; i < y + height; i++) {
+        newArray.push(array[i]?.slice(x, x + width));
     }
     return newArray;
 }

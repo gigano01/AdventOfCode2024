@@ -1,7 +1,7 @@
 import { announceChallenge, decodeFile } from "./common.ts";
 
 // Get the file path from command line arguments
-const filePath = process.argv[2];
+const filePath = Deno.argv[2];
 announceChallenge(1, "Historian Hysteria");
 //4578
 function checkValidity(pageNrs: number[], instructionsX: number[], instructionsY: number[]) {
