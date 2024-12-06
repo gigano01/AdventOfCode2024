@@ -1,6 +1,8 @@
 node_modules
 package-lock.json
 .vscode/*
+input/*
+input
 
 #you don't need this lol
 AdventOfCode2024.code-workspace

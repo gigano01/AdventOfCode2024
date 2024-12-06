@@ -1,78 +1,86 @@
-import { announceChallenge, decodeFile, swapElements } from "./common";
+import { announceChallenge, decodeFile } from "./common.ts";
 
 // Get the file path from command line arguments
 const filePath = process.argv[2];
-announceChallenge(5, "Print Queue");
-
-async function part1(instructX: number[], instructY: number[], pageNrs: number[][]) {
-    let answer = 0;
-    for (const slice of pageNrs) {
-		let correct
-		while(!correct){
-			correct = true
-			for (let i = 0; i < slice.length; i++) {
-				const a = slice[i];
-				for (let j = 0; i < slice.length; i++) {
-					const b = slice[j];
-					for (let z = 1; z < instructX.length; z++) {
-						if (instructX[z] != a && instructY[z] != a) continue;
-						if (instructX[z] != b && instructY[z] != b) continue;
-						// console.log(a, b, instructX[i], instructY[i])
-						// console.log(a,b)
-						console.log(slice)
-						if(i > j){
-							if (instructY[z] === a) {swapElements(slice, i, j);correct=false};
-						} else {
-							if (instructY[z] === a) {swapElements(slice, i, j);correct=false};
-						}
-					}
-				}
-			}
-		}
-
-        console.log(slice);
-        if (slice.length % 2 == 0) console.log("fucked list", slice);
-        // console.log(Math.round(slice.length / 2)-1)
-        answer += slice[Math.round(slice.length / 2) - 1];
+announceChallenge(1, "Historian Hysteria");
+//4578
+function checkValidity(pageNrs: number[], instructionsX: number[], instructionsY: number[]) {
+    for (let i = 0; i < pageNrs.length; i++) {
+        const a = pageNrs[i];
+        const b = pageNrs[i + 1];
+        for (let j = 0; j < instructionsX.length; j++) {
+            if (instructionsX[j] != a && instructionsY[j] != a) continue;
+            if (instructionsX[j] != b && instructionsY[j] != b) continue;
+            // console.log(a, b, instructionsX[j], instructionsY[j])
+            if (instructionsX[j] != a) return false;
+        }
     }
-
-    console.log("solution part 1:", answer);
+    return true;
 }
 
-async function part2() {
-    console.log("solution part 2:", "NAN");
+async function part1(instructionsX: number[], instructionsY: number[], pageNrCollection: number[][]) {
+    let sum = 0;
+    for (const pageNrs of pageNrCollection) {
+        if (checkValidity(pageNrs, instructionsX, instructionsY)) {
+            sum += pageNrs[Math.ceil(pageNrs.length / 2) - 1];
+        }
+    }
+
+    console.log("solution part 1:", sum);
+}
+
+async function part2(instructionsX: number[], instructionsY: number[], pageNrCollection: number[][]) {
+    let sum = 0;
+    for (const pageNrs of pageNrCollection) {
+        if (!checkValidity(pageNrs, instructionsX, instructionsY)) {
+            pageNrs.sort((a, b) => {
+                for (let j = 0; j < instructionsX.length; j++) {
+                    if (instructionsX[j] != a && instructionsY[j] != a) continue;
+                    if (instructionsX[j] != b && instructionsY[j] != b) continue;
+                    // console.log(a, b, instructionsX[j], instructionsY[j])
+                    if (instructionsX[j] == a) return -1;
+                    if (instructionsY[j] == a) return 1;
+                }
+                return 0;
+            });
+            sum += pageNrs[Math.ceil(pageNrs.length / 2) - 1];
+        }
+    }
+
+    console.log("solution part 2:", sum);
 }
 
 async function main() {
-    const instructX: number[] = [];
-    const instructY: number[] = [];
-    const pageNrs: number[][] = [];
+    const instructionsX: number[] = [];
+    const instructionsY: number[] = [];
+    const pageNrCollection: number[][] = [];
+
     await decodeFile(filePath, async (lines) => {
-        let endOfInstructions: boolean = false;
+        let endOfInstructions = false;
         for (const line of lines) {
             if (line.trim() === "") {
                 endOfInstructions = true;
                 continue;
             }
             if (!endOfInstructions) {
-                const decodedLine = line.trim().split("|");
-                instructX.push(Number.parseInt(decodedLine[0]));
-                instructY.push(Number.parseInt(decodedLine[1]));
+                const extracted = line.trim().split("|");
+                instructionsX.push(Number.parseInt(extracted[0]));
+                instructionsY.push(Number.parseInt(extracted[1]));
             } else {
-                const numbers = line.trim().split(",");
-                const newNumber: number[] = numbers.map((value) => {
-                    return Number.parseInt(value);
-                });
-                // console.log(numbers, newNumber);
-                pageNrs.push(newNumber);
+                pageNrCollection.push(
+                    line
+                        .trim()
+                        .split(",")
+                        .map((val) => {
+                            return parseInt(val);
+                        })
+                );
             }
         }
     });
 
-    // console.log("=============================\n", instructX, instructY, pageNrs);
-
-    part1(instructX, instructY, pageNrs);
-    part2();
+    part1(instructionsX, instructionsY, pageNrCollection);
+    part2(instructionsX, instructionsY, pageNrCollection);
 }
 
 main();

@@ -1,4 +1,4 @@
-import { announceChallenge, decodeFile } from './common';
+import { announceChallenge, decodeFile } from './common.ts';
 
 // Get the file path from command line arguments
 const filePath = process.argv[2];
