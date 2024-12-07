@@ -1,7 +1,7 @@
 import { announceChallenge, decodeFile } from "./common";
 
 // Get the file path from command line arguments
-const filePath = process.argv[2];
+const filePath = Deno.args[0];
 announceChallenge(3, "Day 3: Mull It Over");
 
 async function part1() {

@@ -1,7 +1,7 @@
-import { announceChallenge, decodeFile, extract2DArrayFunky, match2DArray } from "./common";
+import { announceChallenge, decodeFile, extract2DArrayFunky, match2DArray } from "./common.ts";
 
 // Get the file path from command line arguments
-const filePath = process.argv[2];
+const filePath = Deno.args[0];
 announceChallenge(4, "Ceres Search");
 
 function findXmas(y: number, x: number, grid: string[][], count: number) {

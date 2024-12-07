@@ -1,7 +1,7 @@
-import { announceChallenge, decodeFile, removeFromArray } from "./common";
+import { announceChallenge, decodeFile, removeFromArray } from "./common.ts";
 
 // Get the file path from command line arguments
-const filePath = process.argv[2];
+const filePath = Deno.args[0];
 announceChallenge(2, "Red-Nosed Reports");
 
 function validateReport(report: number[]): boolean {
