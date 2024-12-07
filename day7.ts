@@ -17,7 +17,7 @@ async function part2() {
 
 async function main () {
 	const lines = Deno.readTextFileSync(filePath).trim().split("\n");
-
+	
 	part1();
 	part2();
 }
