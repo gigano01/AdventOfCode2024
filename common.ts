@@ -90,3 +90,8 @@ export function swapElements(arr: any[], index1: number, index2: number) {
     arr[index1] = arr[index2];
     arr[index2] = temp;
 }
+
+export function factorial(num: number) : number {
+    if (num == 0) return 1
+    else return num * factorial(num - 1)
+}
