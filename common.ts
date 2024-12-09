@@ -95,3 +95,18 @@ export function factorial(num: number) : number {
     if (num == 0) return 1
     else return num * factorial(num - 1)
 }
+
+export function getPrettyGrid(grid: string[][]) {
+    let str = "";
+    for (let i = 0; i < grid.length; i++) {
+        const row = grid[i];
+        // console.log(row)
+        for (let j = 0; j < row.length; j++) {
+            const element = row[j];
+            // console.log(element)
+            str = str.concat(element);
+        }
+        str = str.concat("\n");
+    }
+    return str;
+}
