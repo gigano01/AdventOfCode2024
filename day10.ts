@@ -7,7 +7,6 @@ announceChallenge(10, "Hoof It");
 function walkPath(grid: string[][], x: number, y: number, depth: number, mustBeUnique: boolean, trailheads: string[] = [], count = 0) {
     const gridH = grid.length;
     const gridW = grid[0].length;
-    const char = get2DArrayElementSafe(grid, x, y);
     if (x < 0 || x >= gridW || y < 0 || y >= gridH) return count;
     if (grid[y][x] === String(depth)) {
         if (depth > 8 && trailheads.findIndex((val) => val == `${x},${y}`) === -1) {
