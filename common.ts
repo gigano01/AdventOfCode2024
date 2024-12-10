@@ -1,3 +1,4 @@
+import { assert } from "node:console";
 import * as fs from "node:fs";
 import * as path from "node:path";
 
@@ -71,6 +72,7 @@ export function extract2DArrayFunky<T>(
 
 //arrays are assumed to be of the same size!
 export function match2DArray<T>(array: T[][], matcheable: string[][]) {
+	assert(array.length === matcheable.length)
     // console.log(matcheable)
     for (let x = 0; x < array.length; x++) {
         for (let y = 0; y < array[x].length; y++) {
