@@ -1,4 +1,5 @@
 import { announceChallenge } from "./common.ts";
+import {Memoize,MemoizeExpiring} from 'typescript-memoize';
 import { LinkedList, LinkedListItem } from "https://deno.land/x/linkedlist@v1.1.1/mod.ts";
 
 // Get the file path from command line arguments
@@ -43,7 +44,7 @@ function memoizePerformActions() {
     let cache = {};
     return (stone: number): number[] => {
         if (stone in cache) {
-			// console.log(stone)
+            // console.log(stone)
             return cache[stone];
         }
 
@@ -68,29 +69,44 @@ function memoizePerformActions() {
     };
 }
 
-let glob = 0
+let glob = 0;
 const performActions = memoizePerformActions();
-function blink(stone: number, blinkcount: number, counter: number) {
-	glob++
-	if(blinkcount >= 75) {glob--;return counter + 1}
-	
-	const H = performActions(stone)
-	blinkcount += 1
-	counter = blink(H[0], blinkcount, counter)
-	if(H[1])counter = blink(H[1],blinkcount, counter)
-		
-		glob--
-		// console.log(glob)
-	return counter
+
+function MemoizeBlink() {
+    let cache: any = {};
+
+    const blink = (stone: number, blinkcount: number, counter: number) => {
+		const hash = `${stone},${blinkcount}`
+        if (hash in cache) {
+			// console.log("found stone: ", hash, "in cache: ",cache[hash])
+            return cache[hash];
+        }
+
+        if (blinkcount >= 25) {
+			cache[hash] = counter + 1
+            return counter + 1;
+        }
+
+        const H = performActions(stone);
+        blinkcount += 1;
+        counter = blink(H[0], blinkcount, counter);
+        if (H[1]) counter = blink(H[1], blinkcount, counter);
+
+        glob--;
+        // console.log(glob)
+		// cache[hash] = counter
+        return counter;
+    };
+    return blink;
 }
 
-
 async function part2(stones: number[]) {
-	let count = 0
-	for(let i = 0; i < stones.length; i++){
-		count += blink(stones[i], 0, 0)
-		console.log(count)
-	}
+    let count = 0;
+	const blink = MemoizeBlink()
+    for (let i = 0; i < stones.length; i++) {
+        count += blink(stones[i], 0, 0);
+        console.log(count);
+    }
 
     console.log("solution part 2:", count);
 }
