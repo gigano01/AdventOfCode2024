@@ -1,4 +1,5 @@
 import { announceChallenge } from './common.ts';
+import { LinkedList, LinkedListItem } from "https://deno.land/x/linkedlist@v1.1.1/mod.ts"
 
 // Get the file path from command line arguments
 const filePath = Deno.args[0] || "input/day11.test";
@@ -37,25 +38,49 @@ function splitDigits(number: number){
 	return [digit1,digit2]	
 }
 
-async function part2(stones: number[]) {
+function memoizePerformActions(){
+	let cache = {}
+	return (stone: number):number[]=>{
+		if(stone in cache){
+			return cache[stone]
+		}
+
+		if(stone == 0){
+			const a = [1]
+			cache[stone] = a
+			return a
+			// stones.push(1)
+		} else if ((Math.floor(Math.log10(stone)+1)) % 2 == 0) { //even digit length
+			const res = splitDigits(stone)
+			cache[stone] = res
+			return res
+			// stones.push(digits[1])
+			// stones.push(digits[0])
+		} else {
+			const res = [stone * 2024]
+			cache[stone] = res
+			return res
+			// stones.push(stone * 2024)
+		}
+	}
+}
+
+async function part2(stones: LinkedList<number>) {
 	const maxBlinks = 75
+	const performActions = memoizePerformActions()
 	for(let blink = 0; blink < maxBlinks; blink++){
 		const len = stones.length
-		for(let i = 0; i < len; i++){
-			const stone = stones.shift()!;
+		stones.forEach((stone,i)=>{
 			// console.log(Math.floor(Math.log10(stone)+1), stone)
-			if(stone == 0){
-				stones.push(1)
-			} else if ((Math.floor(Math.log10(stone)+1)) % 2 == 0) { //even digit length
-				const digits = splitDigits(stone)
-				stones.push(digits[1])
-				stones.push(digits[0])
-			} else {
-				stones.push(stone * 2024)
+			const H = performActions(stone)
+			i.value = H[0]
+			if(H[1]){
+				stones.push(H[1])
 			}
-		}
+		})
+		
 		// console.log(blink,stones)
-		console.log(blink)
+		console.log(blink, stones.length)
 	}
 	
 	console.log("solution part 2:", stones.length);
@@ -66,7 +91,7 @@ async function main () {
 	const stones: number[] = lines[0].trim().split(" ").map(val=>parseInt(val))
 
 	part1(structuredClone(stones));
-	part2(structuredClone(stones));
+	part2(new LinkedList(stones));
 }
 
 main()
