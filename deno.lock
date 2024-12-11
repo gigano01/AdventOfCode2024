@@ -20,5 +20,12 @@
     "https://deno.land/x/linkedlist@v1.1.1/mod.ts": "11e04b4297bd9233c7f66563a8ec7617503b868651563c206a8e1d9003046acc",
     "https://deno.land/x/linkedlist@v1.1.1/src/linked_list.ts": "8dfc43a00e61dd139a766afe55f4678d546d5cf30c487bca3bb50c74ec40aedc",
     "https://deno.land/x/linkedlist@v1.1.1/src/linked_list_item.ts": "07c8a171eeffdde16e5f68bd3612a87f6bdbdf34ce14506fcbbf2ab35207a587"
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:typescript-memoize@^1.1.1"
+      ]
+    }
   }
 }

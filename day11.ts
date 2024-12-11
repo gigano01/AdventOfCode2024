@@ -1,5 +1,4 @@
 import { announceChallenge } from "./common.ts";
-import {Memoize,MemoizeExpiring} from 'typescript-memoize';
 import { LinkedList, LinkedListItem } from "https://deno.land/x/linkedlist@v1.1.1/mod.ts";
 
 // Get the file path from command line arguments
@@ -41,7 +40,7 @@ function splitDigits(number: number) {
 }
 
 function memoizePerformActions() {
-    let cache = {};
+    let cache: any = {};
     return (stone: number): number[] => {
         if (stone in cache) {
             // console.log(stone)
@@ -75,26 +74,26 @@ const performActions = memoizePerformActions();
 function MemoizeBlink() {
     let cache: any = {};
 
-    const blink = (stone: number, blinkcount: number, counter: number) => {
+    const blink = (stone: number, blinkcount: number) => {
+		let counter = 0
 		const hash = `${stone},${blinkcount}`
         if (hash in cache) {
 			// console.log("found stone: ", hash, "in cache: ",cache[hash])
             return cache[hash];
         }
 
-        if (blinkcount >= 25) {
-			cache[hash] = counter + 1
+        if (blinkcount >= 75) {
             return counter + 1;
         }
 
         const H = performActions(stone);
         blinkcount += 1;
-        counter = blink(H[0], blinkcount, counter);
-        if (H[1]) counter = blink(H[1], blinkcount, counter);
+        counter += blink(H[0], blinkcount);
+        if (H[1]) counter += blink(H[1], blinkcount);
 
         glob--;
         // console.log(glob)
-		// cache[hash] = counter
+		cache[hash] = counter
         return counter;
     };
     return blink;
@@ -104,7 +103,7 @@ async function part2(stones: number[]) {
     let count = 0;
 	const blink = MemoizeBlink()
     for (let i = 0; i < stones.length; i++) {
-        count += blink(stones[i], 0, 0);
+        count += blink(stones[i], 0);
         console.log(count);
     }
 
