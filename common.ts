@@ -32,13 +32,7 @@ export async function decodeFile(filePath: string, decodeHandler: (lines: Array<
     }
 }
 
-export function extract2DArray<T>(
-    array: Array<Array<T>>,
-    x: number,
-    y: number,
-    width: number,
-    height: number
-): Array<Array<any>> {
+export function extract2DArray<T>(array: Array<Array<T>>, x: number, y: number, width: number, height: number): Array<Array<any>> {
     let newArray: T[][] = [];
     for (let i = y; i < y + height; i++) {
         newArray.push(array[i]?.slice(x, x + width));
@@ -47,16 +41,10 @@ export function extract2DArray<T>(
 }
 
 export function get2DArrayElementSafe<T>(array: T[][], x: number, y: number): T {
-    return array[y]?.[x]
+    return array[y]?.[x];
 }
 
-export function extract2DArrayFunky<T>(
-    array: T[][],
-    x: number,
-    y: number,
-    width: number,
-    height: number
-): T[][] {
+export function extract2DArrayFunky<T>(array: T[][], x: number, y: number, width: number, height: number): T[][] {
     let newArray: T[][] = [];
     for (let _y = y; _y < y + height; _y++) {
         let line: T[] = [];
@@ -72,7 +60,7 @@ export function extract2DArrayFunky<T>(
 
 //arrays are assumed to be of the same size!
 export function match2DArray<T>(array: T[][], matcheable: string[][]) {
-	assert(array.length === matcheable.length)
+    assert(array.length === matcheable.length);
     // console.log(matcheable)
     for (let x = 0; x < array.length; x++) {
         for (let y = 0; y < array[x].length; y++) {
@@ -93,9 +81,9 @@ export function swapElements(arr: any[], index1: number, index2: number) {
     arr[index2] = temp;
 }
 
-export function factorial(num: number) : number {
-    if (num == 0) return 1
-    else return num * factorial(num - 1)
+export function factorial(num: number): number {
+    if (num == 0) return 1;
+    else return num * factorial(num - 1);
 }
 
 export function getPrettyGrid(grid: string[][]) {
@@ -111,4 +99,18 @@ export function getPrettyGrid(grid: string[][]) {
         str = str.concat("\n");
     }
     return str;
+}
+
+export function getGridSize<T>(grid: T[][]) {
+    const h = grid.length;
+    const w = grid[0].length;
+    return [w, h];
+}
+
+export function outOfBounds<T>(grid: T[][], x: number, y: number, width: number, height: number) {
+    if (x < 0 || x >= width || y < 0 || y >= height) {
+		return true
+    } else {
+		return false
+	}
 }
